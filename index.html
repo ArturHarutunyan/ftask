@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+	<div class="modal fade" id="borderModal" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Task For Fidem LLC</h4>
+				</div>
+				<div class="modal-body">
+					<div>
+						<span>border left</span>
+						<select id="left">
+							<option value="1">None</option>
+							<option value="2">type1</option>
+							<option value="3">type2</option>
+						</select>
+					</div>
+					<div>
+						<span>border right</span>
+						<select id="right">
+							<option value="1">None</option>
+							<option value="2">type1</option>
+							<option value="3">type2</option>
+						</select>
+					</div>
+					<div>
+						<span>border top</span>
+						<select id="top">
+							<option value="1">None</option>
+							<option value="2">type1</option>
+							<option value="3">type2</option>
+						</select>
+					</div>
+					<div>
+						<span>border bottom</span>
+						<select id="bottom">
+							<option value="1">None</option>
+							<option value="2">type1</option>
+							<option value="3">type2</option>
+						</select>
+					</div>
+					<input type="hidden" id="element-id" value="0">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" id="addBorder">apply</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="changeColorModal" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Task For Fidem LLC</h4>
+				</div>
+				<div class="modal-body">
+					<span>color</span>
+					<input type="color" id="maincolor"  value="green">
+					<input type="hidden" id="element-id" value="0">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" id="setColor">apply</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<section class="form-groups">
+		<div id="input-group">
+			<div class="input-cart">
+				<input class="widths" number="0" id="w-0" type="text" placeholder="Width">
+				<input class="heights" number="0" id="h-0" type="text" placeholder="Height">
+				<input class="counts" number="0" id="c-0" type="text" placeholder="Count">
+				<input type="hidden"   number="0" id="border-left-0" value="1">
+				<input type="hidden"   number="0" id="border-right-0" value="1">
+				<input type="hidden"   number="0" id="border-top-0" value="1">
+				<input type="hidden"   number="0" id="border-bottom-0" value="1">
+				<button id="block-0" num="0" class="setBorder">border</button>
+
+			</div>
+		</div>
+		<div class="button-cart">
+			<button class="add btn2">+</button>
+			<button class="click btn1">click me</button>
+		</div>
+	</section>
+
+	<section>
+		<div id="mosaic"></div>
+	</section>
+
+	<script src="js/xdRectPacker.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>
