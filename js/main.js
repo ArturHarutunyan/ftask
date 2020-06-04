@@ -173,10 +173,10 @@ let go = function(){
         div.style.top = packer.pack[i].y+"px";
         div.style.width = (packer.pack[i].w+packer.pack[i].bls+packer.pack[i].brs)+"px";
         div.style.position = "absalute";
-        div.style.backgroundColor = random_color();
+        div.style.backgroundColor = "green"
         div.style.height = (packer.pack[i].h+packer.pack[i].bts+packer.pack[i].bbs)+"px";
         div.setAttribute("number",parseInt(i));
-        
+        $(div).draggable({containment:"#mosaic"})
         div.innerHTML = parseInt(i)+1;
         //}
 
