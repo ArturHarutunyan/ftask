@@ -58,7 +58,7 @@ square.prototype = {
 	pack:[],
 	findPlace:function( rc ){
 		if( this.pack.length ){
-			var i = 0;
+			let i = 0;
 			while( i<this.pack.length ){
 				if( rc.intersect( this.pack[i] ) ){
 					if( 1+rc.w+(rc.bls+rc.brs)+this.pack[i].x1()<this.width ){
@@ -77,7 +77,7 @@ square.prototype = {
 	},
 	fit:function (rcs){
 		this.pack = [];
-		for(var i=0;i<rcs.length;i++){
+		for(let i=0;i<rcs.length;i++){
 			this.pack.push( this.findPlace(rcs[i]) );
 		}
 	}

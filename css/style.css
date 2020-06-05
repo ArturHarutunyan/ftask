@@ -53,14 +53,18 @@ button {
     color: #fff;
 }
 
-#mosaic{
+.mosaic{
     width: 500px;
-    height: 100vh;
+    height: 500px;
     box-shadow: 0px 0px 5px 0px rgba(197, 202, 222, 0.4);
     margin: 30px;
     position: relative;
 }
 
 .element{
+    position: absolute;
+}
+.colored{
+    background-color: red;
     position: absolute;
 }

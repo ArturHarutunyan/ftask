@@ -5,7 +5,7 @@ $(document).ready(function(){
     $('.add').on('click', function(){
         addInputCart(++num)
     });
-    $("#mosaic").on("click",changeColor);
+    $(".mosaic").on("click",changeColor);
     $("#setColor").on("click",setColor);
     $(".setBorder").on("click",openBorderModal)
     
@@ -74,16 +74,24 @@ var random_color = function(){
     return "#"+color_types[parseInt(Math.random()*16)]+color_types[parseInt(Math.random()*16)]+color_types[parseInt(Math.random()*16)]+color_types[parseInt(Math.random()*16)]+color_types[parseInt(Math.random()*16)]+color_types[parseInt(Math.random()*16)];
 	//return '#('+color[0]+','+color[1]+','+color[2]+')';
 }
-
 let go = function(){
-    let width = document.getElementById("mosaic").offsetWidth;
-    let height = document.getElementById("mosaic").offsetHeight;
+    let number = 0;
+
+    let mosaic = document.createElement('div');
+    mosaic.id = 'mosaic_'+number
+    mosaic.setAttribute("number",number)
+    mosaic.className = "mosaic"
+    document.getElementById("mosaics").innerHTML = "";
+    document.getElementById("mosaics").appendChild(mosaic)
+
+    let width = mosaic.offsetWidth;
+    let height = mosaic.offsetHeight;
     let maxsquere = width*height;
-    let mosaic = document.getElementById('mosaic');
+    
     mosaic.innerHTML = "";
     let blocks = [],
     blocksSquere = 0;
-    packer = new square( width, height );
+    
     for(let i=0;i<$(".widths").length;++i){
         number = $(".widths")[i].getAttribute("number")
         for(let j=0;j<$("#c-"+number).val();++j){
@@ -94,7 +102,7 @@ let go = function(){
             borderTop = +$("#border-top-"+number).val()
             borderBottom = +$("#border-bottom-"+number).val()
             blocksSquere += blockwidth*blockheight;
-            if(blocksSquere>maxsquere || blockwidth>width || blockheight>height){
+            if(/*blocksSquere>maxsquere || */blockwidth>width || blockheight>height){
                 alert("Error There is not enough space for selected elemets");
                 return false;
             }
@@ -103,9 +111,7 @@ let go = function(){
         
     }
     
-    //blocks.shuffle();
 
-   //blocks.shuffle();
 
     let max_heigth_id = 0;
     let max_width_id = 0;
@@ -119,12 +125,13 @@ let go = function(){
     }
     
     for(let i = 1;i<blocks.length;++i){
-        if(blocks[i].w+(blocks[i].bls+blocks[i].brs)+blocks[max_width_id].w+(blocks[max_width_id].bls+blocks[max_width_id].brs)>width && i!=max_width_id){
+        /*if(blocks[i].w+(blocks[i].bls+blocks[i].brs)+blocks[max_width_id].w+(blocks[max_width_id].bls+blocks[max_width_id].brs)>width && i!=max_width_id){
             if(blocks[i].h+(blocks[i].bts+blocks[i].bbs)+blocks[max_width_id].h+(blocks[max_width_id].bts+blocks[max_width_id].bbs)>height){
                 alert("Error, There is not enough space for selected elemets")
                 return false;
             }
         }
+        */
         if(blocks[i].h+(blocks[i].bts+blocks[i].bbs)+blocks[max_width_id].h+(blocks[max_width_id].bts+blocks[max_width_id].bbs)>height&& i!=max_heigth_id){
             if(blocks[i].w+(blocks[i].bls+blocks[i].brs)+blocks[max_width_id].w+(blocks[max_width_id].bls+blocks[max_width_id].brs)>width){
                 alert("Error, There is not enough space for selected elemets")
@@ -134,19 +141,38 @@ let go = function(){
     }
 
     blocks.sort(function (a,b){return (a.h+a.bbs+a.bts)*(a.w+a.bls+a.brs)<(b.h+b.bbs+b.bts)*(b.w+b.bls+b.brs) ? 1 : (a.h+a.bbs+a.bts)*(a.w+a.bls+a.brs)>(b.h+b.bbs+b.bts)*(b.w+b.bls+b.brs)?-1:0});
+        
     
+    
+    packer = new square( width, height );
     packer.fit(blocks);
-    for(let i=0;i<packer.pack.length;++i){
+    
+    let i = 0
+    let id = 0;
+    while(blocks.length>0){
+        id++;
+        if(  packer.pack[i].y+(packer.pack[i].h+packer.pack[i].bts+packer.pack[i].bbs)>height ){
+            
+            for(let j =0;j<blocks.length;++j){
+                console.log(blocks[j].y = 0)
+            }
+            packer = new square( width, height );
+            packer.fit(blocks);
+            mosaic = document.createElement("div");
+            mosaic.id = "mosaic_"+(++number)
+            mosaic.setAttribute("number",number)
 
+            mosaic.className = "mosaic"
+            document.getElementById("mosaics").appendChild(mosaic)
+            i = 0
+        }
         var div = document.createElement("div");
         div.id = "element-"+i;
         div.className = "element";
 
         mosaic.appendChild(div)
         
-		//if(div.style){
-            console.log(packer.pack[i])
-        if(packer.pack[i].bl == 2){
+		if(packer.pack[i].bl == 2){
             div.style.borderLeft = "3px solid";
         }else if(packer.pack[i].bl == 3){
             div.style.borderLeft = "3px dashed";
@@ -176,11 +202,15 @@ let go = function(){
         div.style.backgroundColor = "green"
         div.style.height = (packer.pack[i].h+packer.pack[i].bts+packer.pack[i].bbs)+"px";
         div.setAttribute("number",parseInt(i));
-        $(div).draggable({containment:"#mosaic"})
-        div.innerHTML = parseInt(i)+1;
-        //}
+        
+        $(div).draggable({containment:"#mosaic_"+number})
+        div.innerHTML = parseInt(id);
+        blocks.shift()
+       
+        i++
 
     }
+    $(".mosaic").on("click",changeColor);
 
    
 }
@@ -208,12 +238,67 @@ Array.prototype.shuffle = function( b ){
 };
 
 let changeColor = function(event){
-    if(event.target.id==="mosaic"){
+    
+    if(event.target.className==="mosaic"){
+        number = event.target.getAttribute("number")
+        let X = [event.clientX,event.clientX]
+        let Y = [event.clientY,event.clientY,event.clientY,event.clientY]
+        
+        
+
+        while(document.elementFromPoint(X[0], Y[0]).className=="mosaic"){
+            --X[0];
+        }
+        while(document.elementFromPoint(X[1], Y[0]).className=="mosaic"){
+            ++X[1];
+        }
+        
+        while(document.elementFromPoint(X[0]+1, Y[0]).className=="mosaic"){
+            --Y[0];
+        }
+        while(document.elementFromPoint(X[0]+1, Y[1]).className=="mosaic"){
+            ++Y[1];
+        }
+        console.log(X[1])
+        while(document.elementFromPoint(X[1]-1, Y[2]).className=="mosaic"){
+            --Y[2];
+        }
+        while(document.elementFromPoint(X[1]-1, Y[3]).className=="mosaic"){
+            ++Y[3];
+        }
+        if(Y[1]-Y[0]>Y[3]-Y[4]){
+            let colored = document.createElement("div")
+            document.body.appendChild(colored)
+            colored.className = "colored"
+            console.log("colored.style")
+            colored.style.width = X[1]-X[0]
+            colored.style.height = Y[1]-Y[0]
+            colored.style.left = X[0]
+            colored.style.top = Y[0]
+            
+
+        }else{
+            let colored = document.createElement("div")
+            document.body.appendChild(colored)
+            colored.className = "colored"
+            console.log("colored.asd")
+
+            colored.style.width = (X[1]-X[0])+"px"
+            colored.style.height = (Y[3]-Y[2])+"px"
+            colored.style.left = X[0]+"px"
+            colored.style.top = Y[2]+"px"
+            
+        }
+        
+        $("#mosaic-id").val(number)
         $("#changeColorModal").modal();
     }
+    
 }
 let setColor = function(){
-    document.getElementById("mosaic").style.backgroundColor = document.getElementById("maincolor").value;
+        
+    let number = $("#mosaic-id").val()
+    document.getElementById("mosaic_"+number).style.backgroundColor = document.getElementById("maincolor").value;
 
     $("#changeColorModal").modal("hide");
     
