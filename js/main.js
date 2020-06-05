@@ -12,6 +12,8 @@ $(document).ready(function(){
     $("#addBorder").on("click",addBorder)
 });
 
+
+
 function addInputCart(num){
     let html =
         '<div class="input-cart">' 
@@ -76,7 +78,7 @@ var random_color = function(){
 }
 let go = function(){
     let number = 0;
-
+    $(".colored").remove()
     let mosaic = document.createElement('div');
     mosaic.id = 'mosaic_'+number
     mosaic.setAttribute("number",number)
@@ -93,14 +95,14 @@ let go = function(){
     blocksSquere = 0;
     
     for(let i=0;i<$(".widths").length;++i){
-        number = $(".widths")[i].getAttribute("number")
-        for(let j=0;j<$("#c-"+number).val();++j){
-            blockwidth = +$("#w-"+number).val()
-            blockheight = +$("#h-"+number).val()
-            borderLeft = +$("#border-left-"+number).val()
-            borderRight = +$("#border-right-"+number).val()
-            borderTop = +$("#border-top-"+number).val()
-            borderBottom = +$("#border-bottom-"+number).val()
+        _number = $(".widths")[i].getAttribute("number")
+        for(let j=0;j<$("#c-"+_number).val();++j){
+            blockwidth = +$("#w-"+_number).val()
+            blockheight = +$("#h-"+_number).val()
+            borderLeft = +$("#border-left-"+_number).val()
+            borderRight = +$("#border-right-"+_number).val()
+            borderTop = +$("#border-top-"+_number).val()
+            borderBottom = +$("#border-bottom-"+_number).val()
             blocksSquere += blockwidth*blockheight;
             if(/*blocksSquere>maxsquere || */blockwidth>width || blockheight>height){
                 alert("Error There is not enough space for selected elemets");
@@ -202,7 +204,7 @@ let go = function(){
         div.style.backgroundColor = "green"
         div.style.height = (packer.pack[i].h+packer.pack[i].bts+packer.pack[i].bbs)+"px";
         div.setAttribute("number",parseInt(i));
-        
+        console.log(number)
         $(div).draggable({containment:"#mosaic_"+number})
         div.innerHTML = parseInt(id);
         blocks.shift()
@@ -211,8 +213,6 @@ let go = function(){
 
     }
     $(".mosaic").on("click",changeColor);
-
-   
 }
 
 let addBorder = function(){
@@ -238,7 +238,6 @@ Array.prototype.shuffle = function( b ){
 };
 
 let changeColor = function(event){
-    
     if(event.target.className==="mosaic"){
         number = event.target.getAttribute("number")
         let X = [event.clientX,event.clientX]
@@ -259,20 +258,18 @@ let changeColor = function(event){
         while(document.elementFromPoint(X[0]+1, Y[1]).className=="mosaic"){
             ++Y[1];
         }
-        console.log(X[1])
         while(document.elementFromPoint(X[1]-1, Y[2]).className=="mosaic"){
             --Y[2];
         }
         while(document.elementFromPoint(X[1]-1, Y[3]).className=="mosaic"){
             ++Y[3];
         }
-        if(Y[1]-Y[0]>Y[3]-Y[4]){
+        if(Y[1]-Y[0]>Y[3]-Y[2]){
             let colored = document.createElement("div")
             document.body.appendChild(colored)
             colored.className = "colored"
-            console.log("colored.style")
-            colored.style.width = X[1]-X[0]
-            colored.style.height = Y[1]-Y[0]
+            colored.style.width = (X[1]-X[0])+"px"
+            colored.style.height = (Y[1]-Y[0])+"px"
             colored.style.left = X[0]
             colored.style.top = Y[0]
             
@@ -281,7 +278,6 @@ let changeColor = function(event){
             let colored = document.createElement("div")
             document.body.appendChild(colored)
             colored.className = "colored"
-            console.log("colored.asd")
 
             colored.style.width = (X[1]-X[0])+"px"
             colored.style.height = (Y[3]-Y[2])+"px"
@@ -291,7 +287,7 @@ let changeColor = function(event){
         }
         
         $("#mosaic-id").val(number)
-        $("#changeColorModal").modal();
+        //$("#changeColorModal").modal();
     }
     
 }
