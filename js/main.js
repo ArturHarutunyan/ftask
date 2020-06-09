@@ -242,50 +242,114 @@ let changeColor = function(event){
         number = event.target.getAttribute("number")
         let X = [event.clientX,event.clientX]
         let Y = [event.clientY,event.clientY,event.clientY,event.clientY]
+        let squers1 = []
+        let squers2 = []
         
+        let positions = event.target.getBoundingClientRect();
         
+        maxY = positions.y+positions.height
+        minY = positions.y
+        maxX0 = event.clientX;
+        maxX1 = event.clientX;
+        maxD = positions.height;
 
+       
         while(document.elementFromPoint(X[0], Y[0]).className=="mosaic"){
+            let i = event.clientY
+            let j = event.clientY
+            for(i=event.clientY;document.elementFromPoint(X[0], i).className=="mosaic";--i){
+            }
+            for(j=event.clientY;document.elementFromPoint(X[0], j).className=="mosaic";++j){
+            }
+            if(j-i-1<maxD){
+                squers1.push([maxX0,i+1,j-1])
+                maxY = j
+                minY = i
+                
+               maxD=j-i-1
+            }else{
+                maxX0 = X[0]
+            }
+            
             --X[0];
         }
+        console.log(maxX0)
+        squers1.push([maxX0,minY,maxY])
+        /*
+        if(maxX0 !=null){
+            
+        }
+        */
+        
+        maxY = positions.y+positions.height
+        minY = positions.y
+        maxD = positions.height
         while(document.elementFromPoint(X[1], Y[0]).className=="mosaic"){
+            let i = event.clientY
+            let j = event.clientY
+            for(i=event.clientY;document.elementFromPoint(X[1], i).className=="mosaic";--i){
+            }
+            for(j=event.clientY;document.elementFromPoint(X[1], j).className=="mosaic";++j){
+            }
+            console.log(j-i-1,maxD)
+
+            if(j-i-1<maxD){
+                squers2.push([maxX1,i+1,j-1])
+                maxY = j
+                minY = i
+                maxD = j-i-1
+            }else{
+                maxX1 = X[1]
+            }
             ++X[1];
         }
         
-        while(document.elementFromPoint(X[0]+1, Y[0]).className=="mosaic"){
-            --Y[0];
-        }
-        while(document.elementFromPoint(X[0]+1, Y[1]).className=="mosaic"){
-            ++Y[1];
-        }
-        while(document.elementFromPoint(X[1]-1, Y[2]).className=="mosaic"){
-            --Y[2];
-        }
-        while(document.elementFromPoint(X[1]-1, Y[3]).className=="mosaic"){
-            ++Y[3];
-        }
-        if(Y[1]-Y[0]>Y[3]-Y[2]){
-            let colored = document.createElement("div")
-            document.body.appendChild(colored)
-            colored.className = "colored"
-            colored.style.width = (X[1]-X[0])+"px"
-            colored.style.height = (Y[1]-Y[0])+"px"
-            colored.style.left = X[0]
-            colored.style.top = Y[0]
-            
-
-        }else{
-            let colored = document.createElement("div")
-            document.body.appendChild(colored)
-            colored.className = "colored"
-
-            colored.style.width = (X[1]-X[0])+"px"
-            colored.style.height = (Y[3]-Y[2])+"px"
-            colored.style.left = X[0]+"px"
-            colored.style.top = Y[2]+"px"
-            
+        if(maxX1 !=null){
+            squers2.push([maxX1,minY,maxY])
         }
         
+
+        maxX1 = 0;
+        maxX2 = 0;
+        maxY1 = 0;
+        maxY2 = 0;
+        squere = 0;
+        cordinates = [0,0,0,0]
+        console.log(squers1)
+        console.log(squers2)
+        for(let i =0;i<squers1.length;++i){
+            for(let j=0;j<squers2.length;++j){
+                //if( !((squers1[i][1]>event.clientY && squers2[j][1]>event.clientY) || (squers1[i][1]<event.clientY && squers2[j][1]<event.clientY)) ){
+                    a = Math.min( Math.abs(squers1[i][2]-squers1[i][1]) , Math.abs(squers2[j][2]-squers2[j][1]))
+                    
+                    b = Math.abs(squers2[j][0]-squers1[i][0]);
+                    if(a*b>squere){
+                        squere = a*b
+                        cordinates[0] = squers1[i][0]
+                        cordinates[1] = squers2[j][0]
+
+                        if(Math.abs(squers1[i][2]-squers1[i][1]) < Math.abs(squers2[j][2]-squers2[j][1])){
+                            cordinates[2] = squers1[i][1]
+                            cordinates[3] = squers1[i][2]
+                        }else{
+                            cordinates[2] = squers2[j][1]
+                            cordinates[3] = squers2[j][2]
+                        }
+
+                    }
+                    
+                //}
+            }
+        }
+        console.log(cordinates)
+        let colored = document.createElement("div")
+        document.body.appendChild(colored)
+        colored.className = "colored"
+        colored.style.width = (cordinates[1]-cordinates[0]+1)+"px"
+        colored.style.height = (cordinates[3]-cordinates[2]+1)+"px"
+        colored.style.top = (cordinates[2])+"px"
+        colored.style.left = (cordinates[0])+"px"
+            
         $("#mosaic-id").val(number)
         //$("#changeColorModal").modal();
     }
