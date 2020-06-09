@@ -241,20 +241,20 @@ let changeColor = function(event){
     if(event.target.className==="mosaic"){
         number = event.target.getAttribute("number")
         let X = [event.clientX,event.clientX]
-        let Y = [event.clientY,event.clientY,event.clientY,event.clientY]
+        
         let squers1 = []
         let squers2 = []
         
         let positions = event.target.getBoundingClientRect();
         
-        maxY = positions.y+positions.height
-        minY = positions.y
-        maxX0 = event.clientX;
-        maxX1 = event.clientX;
-        maxD = positions.height;
+        let maxY = positions.y+positions.height
+        let minY = positions.y
+        let maxX0 = event.clientX;
+        let maxX1 = event.clientX;
+        let maxD = positions.height;
 
        
-        while(document.elementFromPoint(X[0], Y[0]).className=="mosaic"){
+        while(document.elementFromPoint(X[0], event.clientY).className=="mosaic"){
             let i = event.clientY
             let j = event.clientY
             for(i=event.clientY;document.elementFromPoint(X[0], i).className=="mosaic";--i){
@@ -273,25 +273,19 @@ let changeColor = function(event){
             
             --X[0];
         }
-        console.log(maxX0)
-        squers1.push([maxX0,minY,maxY])
-        /*
-        if(maxX0 !=null){
-            
-        }
-        */
         
+        squers1.push([maxX0,minY,maxY])
         maxY = positions.y+positions.height
         minY = positions.y
         maxD = positions.height
-        while(document.elementFromPoint(X[1], Y[0]).className=="mosaic"){
+        while(document.elementFromPoint(X[1], event.clientY).className=="mosaic"){
             let i = event.clientY
             let j = event.clientY
             for(i=event.clientY;document.elementFromPoint(X[1], i).className=="mosaic";--i){
             }
             for(j=event.clientY;document.elementFromPoint(X[1], j).className=="mosaic";++j){
             }
-            console.log(j-i-1,maxD)
+            
 
             if(j-i-1<maxD){
                 squers2.push([maxX1,i+1,j-1])
@@ -309,14 +303,10 @@ let changeColor = function(event){
         }
         
 
-        maxX1 = 0;
-        maxX2 = 0;
-        maxY1 = 0;
-        maxY2 = 0;
+       
         squere = 0;
         cordinates = [0,0,0,0]
-        console.log(squers1)
-        console.log(squers2)
+        
         for(let i =0;i<squers1.length;++i){
             for(let j=0;j<squers2.length;++j){
                 //if( !((squers1[i][1]>event.clientY && squers2[j][1]>event.clientY) || (squers1[i][1]<event.clientY && squers2[j][1]<event.clientY)) ){
@@ -341,7 +331,7 @@ let changeColor = function(event){
                 //}
             }
         }
-        console.log(cordinates)
+        
         let colored = document.createElement("div")
         document.body.appendChild(colored)
         colored.className = "colored"
