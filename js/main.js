@@ -1,3 +1,8 @@
+const sizes = {
+    filled:0,
+    empty:0,
+
+}
 $(document).ready(function(){
     let num = 0;
 
@@ -151,6 +156,7 @@ let go = function(){
     
     let i = 0
     let id = 0;
+    sizes.filled = 0;
     while(blocks.length>0){
         id++;
         if(  packer.pack[i].y+(packer.pack[i].h+packer.pack[i].bts+packer.pack[i].bbs)>height ){
@@ -171,7 +177,7 @@ let go = function(){
         var div = document.createElement("div");
         div.id = "element-"+i;
         div.className = "element";
-
+        
         mosaic.appendChild(div)
         
 		if(packer.pack[i].bl == 2){
@@ -203,8 +209,9 @@ let go = function(){
         div.style.position = "absalute";
         div.style.backgroundColor = "green"
         div.style.height = (packer.pack[i].h+packer.pack[i].bts+packer.pack[i].bbs)+"px";
+        sizes.filled += (packer.pack[i].w+packer.pack[i].bls+packer.pack[i].brs)*(packer.pack[i].h+packer.pack[i].bts+packer.pack[i].bbs);
         div.setAttribute("number",parseInt(i));
-        console.log(number)
+
         $(div).draggable({containment:"#mosaic_"+number})
         div.innerHTML = parseInt(id);
         blocks.shift()
@@ -212,6 +219,12 @@ let go = function(){
         i++
 
     }
+    $("#report").show();
+    
+    sizes.empty = (number+1)*width*height - sizes.filled
+
+    document.getElementById("filled").innerHTML = sizes.filled
+    document.getElementById("empty").innerHTML = sizes.empty
     $(".mosaic").on("click",changeColor);
 }
 
@@ -259,8 +272,18 @@ let changeColor = function(event){
             let j = event.clientY
             for(i=event.clientY;document.elementFromPoint(X[0], i).className=="mosaic";--i){
             }
+            if(document.elementFromPoint(X[0], i).className.includes("element")){
+                i++
+            }
+            //console.log(document.elementFromPoint(X[1], i).tagName)
+
             for(j=event.clientY;document.elementFromPoint(X[0], j).className=="mosaic";++j){
             }
+            if(document.elementFromPoint(X[0], j).className.includes("element")){
+                j--
+            }
+            
+
             if(j-i-1<maxD){
                 squers1.push([maxX0,i+1,j-1])
                 maxY = j
@@ -283,9 +306,14 @@ let changeColor = function(event){
             let j = event.clientY
             for(i=event.clientY;document.elementFromPoint(X[1], i).className=="mosaic";--i){
             }
+            //tagName
+            console.log(document.elementFromPoint(X[1], i).tagName)
+            if(document.elementFromPoint(X[1], i).className.includes("element")){
+                i++
+            }
+
             for(j=event.clientY;document.elementFromPoint(X[1], j).className=="mosaic";++j){
             }
-            
 
             if(j-i-1<maxD){
                 squers2.push([maxX1,i+1,j-1])
@@ -336,10 +364,14 @@ let changeColor = function(event){
         document.body.appendChild(colored)
         colored.className = "colored"
         colored.style.width = (cordinates[1]-cordinates[0]+1)+"px"
-        colored.style.height = (cordinates[3]-cordinates[2]+1)+"px"
+        colored.style.height = (cordinates[3]-cordinates[2])+"px"
         colored.style.top = (cordinates[2])+"px"
         colored.style.left = (cordinates[0])+"px"
-            
+        sizes.filled += (cordinates[1]-cordinates[0]+1)*(cordinates[3]-cordinates[2])
+        sizes.empty -= (cordinates[1]-cordinates[0]+1)*(cordinates[3]-cordinates[2])
+
+        document.getElementById("filled").innerHTML = sizes.filled
+        document.getElementById("empty").innerHTML = sizes.empty
         $("#mosaic-id").val(number)
         //$("#changeColorModal").modal();
     }

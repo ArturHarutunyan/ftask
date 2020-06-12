@@ -52,7 +52,13 @@ button {
     background-color: #fdcb6e;
     color: #fff;
 }
-
+.dn{
+    display: none;
+}
+#report{
+    justify-content: flex-start;
+    margin: 30px;
+}
 .mosaic{
     width: 500px;
     height: 500px;

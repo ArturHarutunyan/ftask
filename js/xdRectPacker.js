@@ -17,8 +17,8 @@ element = function(x,y,w,h,bl,br,bt,bb){
 	brs:br==1?0:3,
 	bts:bt==1?0:3,
 	bbs:bb==1?0:3,
-    x1:function(){ return this.x+this.w;},
-    y1:function(){ return this.y+this.h;},
+    x1:function(){ return this.x+this.w+this.bls+this.brs;},
+    y1:function(){ return this.y+this.h+this.bts+this.bbs;},
     intersect:function( rc ){
       return (
 			(
@@ -72,6 +72,8 @@ square.prototype = {
 				}
 				i++;
 			}
+			if(rc.x>0)rc.x--
+			if(rc.y>0)rc.y--
 		}else{ rc.x = 0; rc.y = 0;};
 		return rc;
 	},
