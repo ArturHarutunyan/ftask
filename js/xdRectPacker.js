@@ -72,8 +72,7 @@ square.prototype = {
 				}
 				i++;
 			}
-			if(rc.x>0)rc.x--
-			if(rc.y>0)rc.y--
+			
 		}else{ rc.x = 0; rc.y = 0;};
 		return rc;
 	},

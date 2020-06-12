@@ -161,9 +161,7 @@ let go = function(){
         id++;
         if(  packer.pack[i].y+(packer.pack[i].h+packer.pack[i].bts+packer.pack[i].bbs)>height ){
             
-            for(let j =0;j<blocks.length;++j){
-                console.log(blocks[j].y = 0)
-            }
+            
             packer = new square( width, height );
             packer.fit(blocks);
             mosaic = document.createElement("div");
@@ -231,7 +229,7 @@ let go = function(){
 let addBorder = function(){
     element_id = document.getElementById("element-id").value;
     document.getElementById("border-left-"+element_id).value    =document.getElementById("left").value
-    console.log(document.getElementById("border-left-"+element_id).value)
+    
     document.getElementById("border-right-"+element_id).value   =document.getElementById("right").value
     document.getElementById("border-top-"+element_id).value    =document.getElementById("top").value
     document.getElementById("border-bottom-"+element_id).value  =document.getElementById("bottom").value
@@ -267,21 +265,18 @@ let changeColor = function(event){
         let maxD = positions.height;
 
        
-        while(document.elementFromPoint(X[0], event.clientY).className=="mosaic"){
+        while(document.elementFromPoint(X[0]-1, event.clientY).className=="mosaic"){
             let i = event.clientY
             let j = event.clientY
             for(i=event.clientY;document.elementFromPoint(X[0], i).className=="mosaic";--i){
             }
-            if(document.elementFromPoint(X[0], i).className.includes("element")){
+            if(document.body.tagName == "BODY"){
                 i++
             }
-            //console.log(document.elementFromPoint(X[1], i).tagName)
-
-            for(j=event.clientY;document.elementFromPoint(X[0], j).className=="mosaic";++j){
+            
+            for(j=event.clientY;(document.elementFromPoint(X[0], j+1)!=null && document.elementFromPoint(X[0], j).className=="mosaic");++j){
             }
-            if(document.elementFromPoint(X[0], j).className.includes("element")){
-                j--
-            }
+            
             
 
             if(j-i-1<maxD){
@@ -301,18 +296,17 @@ let changeColor = function(event){
         maxY = positions.y+positions.height
         minY = positions.y
         maxD = positions.height
-        while(document.elementFromPoint(X[1], event.clientY).className=="mosaic"){
+        while(document.elementFromPoint(X[1]+1, event.clientY).className=="mosaic"){
             let i = event.clientY
             let j = event.clientY
             for(i=event.clientY;document.elementFromPoint(X[1], i).className=="mosaic";--i){
             }
             //tagName
-            console.log(document.elementFromPoint(X[1], i).tagName)
             if(document.elementFromPoint(X[1], i).className.includes("element")){
                 i++
             }
 
-            for(j=event.clientY;document.elementFromPoint(X[1], j).className=="mosaic";++j){
+            for(j=event.clientY;(document.elementFromPoint(X[1], j+1)!=null && document.elementFromPoint(X[1], j).className=="mosaic");++j){
             }
 
             if(j-i-1<maxD){
@@ -363,12 +357,12 @@ let changeColor = function(event){
         let colored = document.createElement("div")
         document.body.appendChild(colored)
         colored.className = "colored"
-        colored.style.width = (cordinates[1]-cordinates[0]+1)+"px"
-        colored.style.height = (cordinates[3]-cordinates[2])+"px"
+        colored.style.width = (cordinates[1]-cordinates[0])+"px"
+        colored.style.height = (cordinates[3]-cordinates[2]+1)+"px"
         colored.style.top = (cordinates[2])+"px"
         colored.style.left = (cordinates[0])+"px"
-        sizes.filled += (cordinates[1]-cordinates[0]+1)*(cordinates[3]-cordinates[2])
-        sizes.empty -= (cordinates[1]-cordinates[0]+1)*(cordinates[3]-cordinates[2])
+        sizes.filled += (cordinates[1]-cordinates[0])*(cordinates[3]-cordinates[2]+1)
+        sizes.empty -= (cordinates[1]-cordinates[0])*(cordinates[3]-cordinates[2]+1)
 
         document.getElementById("filled").innerHTML = sizes.filled
         document.getElementById("empty").innerHTML = sizes.empty
